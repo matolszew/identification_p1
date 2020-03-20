@@ -35,6 +35,18 @@ class ARmodel:
 
         self.coefs = np.matmul(np.linalg.inv(R), s)
 
-    def estimateSignal(self):
+    def estimateSignal(self, n, x):
         """
+
+        Args:
+            n (int): number of samples to estimate
+            x (np.array): initial samples
         """
+        y = np.zeros((self.r+n), dtype=np.float)
+        y[:self.r] = x[-self.r:]
+
+        for i in range(self.r, y.shape[0]):
+            # TODO: check if coefs are in correct order
+            y[i] = y[i-self.r-1:i-1] * self.coefs
+
+        return y[self.r:]
