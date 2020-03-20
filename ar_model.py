@@ -13,7 +13,7 @@ class ARmodel:
         self.r = r
         self.decay = decay
 
-        self.coefs = np.zeros((self.r), dtype=np.float)
+        self.coefs = np.zeros((1,self.r), dtype=np.float)
 
     def updateParams(self, y):
         """
@@ -34,6 +34,7 @@ class ARmodel:
             s += w * y[i] * y[i+1:i_end,0]
 
         self.coefs = np.matmul(np.linalg.inv(R), s)
+        self.coefs = np.flip(self.coefs)
 
     def estimateSignal(self, n, x):
         """
@@ -46,7 +47,6 @@ class ARmodel:
         y[:self.r] = x[-self.r:]
 
         for i in range(self.r, y.shape[0]):
-            # TODO: check if coefs are in correct order
-            y[i] = y[i-self.r-1:i-1] * self.coefs
+            y[i] = np.matmul(y[i-self.r:i], self.coefs)
 
         return y[self.r:]
