@@ -8,8 +8,7 @@ python main.py recording.wav
 
 ### Parameters description
 ```
-python main.py -h
-usage: main.py [-h] [-r ORDER] [-o OUT_FILE] [-u PARAM_WINDOW] [-e PRED_WIDNOW] [-s STEP] [-d DECAY] [-m MAX_STD] filename
+main.py [-h] [-r ORDER] [-o OUT_FILE] [-u PARAM_WINDOW] [-e PRED_WIDNOW] [-s STEP] [-d DECAY] [-m MAX_STD] filename
 
 Removing impulse interference from music recordings
 
@@ -34,4 +33,5 @@ optional arguments:
                         how many times error have to be bigger then standard deviation to classify sample as disturbed
 ```
 
+## Acknowledgments
 Project no 1 on Processes Identification on Control Engineering and Robotics master degree course on Gdańsk University of Technology.
