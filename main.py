@@ -6,7 +6,7 @@ from tqdm import trange
 from ar_model import ARmodel
 
 def correctSignal(signal, model, window_size, pred_size, step, treshold=3):
-    """
+    """Correct signal using AR model
 
     Args:
         signal (np.array): signal to correct
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     parser.add_argument('filename', metavar='filename', type=str, help='path to wave file')
     parser.add_argument('-r', '--order', type=int, default=4, help='order of AR model')
     parser.add_argument('-o', '--out_file', type=str, default='out.wav', help='name of the output file')
-    parser.add_argument('-u', '--param_window', type=int, default=32, help='length of the window for updating AR model coefs')
+    parser.add_argument('-u', '--param_window', type=int, default=256, help='length of the window for updating AR model coefs')
     parser.add_argument('-e', '--pred_widnow', type=int, default=8, help='number of samples to generate from AR model')
     parser.add_argument('-s', '--step', type=int, default=4, help='step interval')
     parser.add_argument('-d', '--decay', type=float, default=1.0, help='decay rate for exponential window')
