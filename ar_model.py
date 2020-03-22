@@ -1,7 +1,7 @@
 import numpy as np
 
 class ARmodel:
-    """
+    """Autoregressive model
 
     Args:
         r (int): autoregresion order
@@ -16,7 +16,7 @@ class ARmodel:
         self.coefs = np.zeros((1,self.r), dtype=np.float)
 
     def updateParams(self, y):
-        """
+        """Calculate new AR coefficients using weighted least square algorithm
 
         Args:
             y (np.array): Signal to calculate AR coefficients
@@ -26,22 +26,27 @@ class ARmodel:
 
         R = np.zeros((self.r, self.r), dtype=np.float)
         s = np.zeros((self.r), dtype=np.float)
-
         for i in range(y.shape[0] - self.r - 1):
             w = self.decay**i
             i_end = i + self.r + 1
             R += w * np.matmul(y[i+1 : i_end], y[i+1:i_end].T)
             s += w * y[i] * y[i+1:i_end,0]
 
-        self.coefs = np.matmul(np.linalg.inv(R), s)
+        try:
+            self.coefs = np.matmul(np.linalg.inv(R), s)
+        except:
+            self.coefs = np.zeros((1,self.r), dtype=np.float)
+
         self.coefs = np.flip(self.coefs)
 
     def estimateSignal(self, n, x):
-        """
+        """Estimate signal based on initial samples and current AR coefficients
 
         Args:
             n (int): number of samples to estimate
             x (np.array): initial samples
+        Returns:
+            np.array: estimated signal
         """
         y = np.zeros((self.r+n), dtype=np.float)
         y[:self.r] = x[-self.r:]
