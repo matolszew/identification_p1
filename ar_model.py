@@ -26,17 +26,13 @@ class ARmodel:
 
         R = np.zeros((self.r, self.r), dtype=np.float)
         s = np.zeros((self.r), dtype=np.float)
-        for i in range(y.shape[0] - self.r - 1):
+        for i in range(1, y.shape[0] - self.r - 1):
             w = self.decay**i
-            i_end = i + self.r + 1
-            R += w * np.matmul(y[i+1 : i_end], y[i+1:i_end].T)
-            s += w * y[i] * y[i+1:i_end,0]
+            i_end = i + self.r
+            R += w * np.matmul(y[i:i_end], y[i:i_end].T)
+            s += w * y[i-1] * y[i:i_end,0]
 
-        try:
-            self.coefs = np.matmul(np.linalg.inv(R), s)
-        except:
-            self.coefs = np.zeros((1,self.r), dtype=np.float)
-
+        self.coefs = np.matmul(np.linalg.inv(R), s)
         self.coefs = np.flip(self.coefs)
 
     def estimateSignal(self, n, x):
